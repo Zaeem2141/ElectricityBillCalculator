@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Modal } from "antd";
 import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
 import "./front.css";
 
 const Front = () => {
@@ -14,6 +13,8 @@ const Front = () => {
 
   const [calculatedData, setCalculatedData] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const modalContentRef = useRef(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -61,24 +62,27 @@ const Front = () => {
 
     setIsModalVisible(true);
   };
-
   const handleDownloadPDF = () => {
-    const modalContent = document.querySelector(".modal-content");
-  
-    // Adjust canvas scale for better quality on mobile
-    const scale = window.innerWidth < 600 ? 1.5 : 2; // Increase scale for mobile devices
-  
-    html2canvas(modalContent, { scale }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF("p", "mm", "a4");
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-  
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("electricity-bill.pdf");
+    const doc = new jsPDF();
+    const modalContent = modalContentRef.current;
+
+    // Generate the PDF directly from HTML content
+    doc.html(modalContent, {
+      callback: function (doc) {
+        doc.save("electricity-bill.pdf");
+      },
+      x: 10, // horizontal margin
+      y: 10, // vertical margin
+      width: 180, // content width
+      windowWidth: window.innerWidth, // full window width
+      margin: [0, 10, 0, 10], // remove extra margins
+      autoPaging: true, // handle auto page breaks
+      overflow: true, // allow overflow content, can be adjusted if needed
     });
   };
+
   
+
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -163,7 +167,7 @@ const Front = () => {
           ]}
       >
         {calculatedData && (
-          <div className="modal-content">
+          <div ref={modalContentRef} className="modal-content">
             <p>
               <strong style={{ float: "center" }}>Date:</strong>{" "}
               {calculatedData.date}
