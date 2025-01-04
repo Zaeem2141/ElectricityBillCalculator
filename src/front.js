@@ -64,17 +64,21 @@ const Front = () => {
 
   const handleDownloadPDF = () => {
     const modalContent = document.querySelector(".modal-content");
-
-    html2canvas(modalContent, { scale: 2 }).then((canvas) => {
+  
+    // Adjust canvas scale for better quality on mobile
+    const scale = window.innerWidth < 600 ? 1.5 : 2; // Increase scale for mobile devices
+  
+    html2canvas(modalContent, { scale }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
+  
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
       pdf.save("electricity-bill.pdf");
     });
   };
+  
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -87,7 +91,7 @@ const Front = () => {
         <h2 className="sub-title">Electricity Bill Calculator</h2>
         <form>
           <div className="input-group">
-            <label htmlFor="totalBill">Total Bill (₹)</label>
+            <label htmlFor="totalBill">Total Bill</label>
             <input
               type="number"
               id="totalBill"
