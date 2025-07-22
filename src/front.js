@@ -9,6 +9,11 @@ const Front = () => {
     totalUnits: "",
     groundFloorUnits: "",
     firstFloorUnits: "",
+    wasa: "",
+    partition: "",
+    firstparts:"",
+    groundParts:"",
+    ownerparts:""
   });
 
   const [calculatedData, setCalculatedData] = useState(null);
@@ -81,9 +86,6 @@ const Front = () => {
     });
   };
 
-  
-
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -115,6 +117,66 @@ const Front = () => {
               value={inputs.totalUnits}
               onChange={handleInputChange}
               placeholder="Enter total units"
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="wasa">Total Wasa Bill</label>
+            <input
+              type="number"
+              id="wasa"
+              name="wasa"
+              value={inputs.wasa}
+              onChange={handleInputChange}
+              placeholder="Enter total wasa bill"
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="partition">Total Partitions</label>
+            <input
+              type="number"
+              id="partition"
+              name="partition"
+              value={inputs.partition}
+              onChange={handleInputChange}
+              placeholder="Enter total partition"
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="firstparts">First Floor parts</label>
+            <input
+              type="number"
+              id="firstparts"
+              name="firstparts"
+              value={inputs.firstparts}
+              onChange={handleInputChange}
+              placeholder="Enter First parts"
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="groundParts">Ground Floor Parts</label>
+            <input
+              type="number"
+              id="groundParts"
+              name="groundParts"
+              value={inputs.groundParts}
+              onChange={handleInputChange}
+              placeholder="Enter ground parts"
+            />
+          </div>
+
+          <div className="input-group">
+            <label htmlFor="ownerparts">Owner Parts</label>
+            <input
+              type="number"
+              id="ownerparts"
+              name="ownerparts"
+              value={inputs.ownerparts}
+              onChange={handleInputChange}
+              placeholder="Enter owner parts"
             />
           </div>
 
@@ -158,13 +220,17 @@ const Front = () => {
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={[
-            <button key="download" className="download-button" onClick={handleDownloadPDF}>
-              Download PDF
-            </button>,
-            <button key="close" className="close-button" onClick={handleCancel}>
-              Close
-            </button>,
-          ]}
+          <button
+            key="download"
+            className="download-button"
+            onClick={handleDownloadPDF}
+          >
+            Download PDF
+          </button>,
+          <button key="close" className="close-button" onClick={handleCancel}>
+            Close
+          </button>,
+        ]}
       >
         {calculatedData && (
           <div ref={modalContentRef} className="modal-content">
@@ -180,15 +246,16 @@ const Front = () => {
                 <strong>Total Bill:</strong> {calculatedData.totalBill}
               </span>
             </p>
-            <br/><br/>
+            <br />
+            <br />
             <p className="centered-row">
-  <span>
-    <strong>Ground Sub Units:</strong> {inputs.groundFloorUnits}
-  </span>
-  <span>
-    <strong>First Floor Sub Units:</strong> {inputs.firstFloorUnits}
-  </span>
-</p>
+              <span>
+                <strong>Ground Sub Units:</strong> {inputs.groundFloorUnits}
+              </span>
+              <span>
+                <strong>First Floor Sub Units:</strong> {inputs.firstFloorUnits}
+              </span>
+            </p>
             <p>
               <strong>Common Units:</strong> {calculatedData.commonUnits}
             </p>
@@ -196,15 +263,15 @@ const Front = () => {
               Price Per Unit: {calculatedData?.pricePerUnit?.toFixed(2)}
             </h3>
             <p className="centered-row">
-  <span>
-    <strong>Ground Sub Meter Bill:</strong>{" "}
-    {calculatedData?.groundSubPrice?.toFixed(2)}
-  </span>
-  <span>
-    <strong>First Floor Sub Meter Bill:</strong>{" "}
-    {calculatedData?.firstSubPrice?.toFixed(2)}
-  </span>
-</p>
+              <span>
+                <strong>Ground Sub Meter Bill:</strong>{" "}
+                {calculatedData?.groundSubPrice?.toFixed(2)}
+              </span>
+              <span>
+                <strong>First Floor Sub Meter Bill:</strong>{" "}
+                {calculatedData?.firstSubPrice?.toFixed(2)}
+              </span>
+            </p>
             <h3 style={{ textAlign: "center", color: "#007bff" }}>
               <strong>Total Common Bill:</strong>{" "}
               {calculatedData?.totalCommonBill?.toFixed(2)}
